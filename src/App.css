@@ -525,6 +525,90 @@ main {
 }
 
 /* ============================================================
+   Consulta: buscador con selector de campo (solo móvil)
+   ============================================================ */
+.controles-movil,
+.barra-orden-movil {
+  display: none;
+}
+
+.buscador-movil {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  border-radius: 999px;
+  padding: 11px 15px;
+  background: var(--oscuro-2);
+  color: var(--oscuro-texto);
+}
+
+.buscador-movil input {
+  flex-grow: 1;
+  min-width: 0;
+  border: none;
+  background: transparent;
+  padding: 0;
+  font-family: inherit;
+  font-size: 15px;
+  color: #ffffff;
+  outline: none;
+}
+
+.buscador-movil input::placeholder {
+  color: var(--oscuro-texto);
+}
+
+.limpiar-busqueda {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  border: none;
+  background: transparent;
+  padding: 0;
+  color: var(--oscuro-texto);
+  cursor: pointer;
+}
+
+.limpiar-busqueda:hover {
+  color: #ffffff;
+}
+
+.chips-campo {
+  display: flex;
+  gap: 6px;
+}
+
+/* Los chips del selector viven sobre el fondo oscuro del encabezado */
+.chip-oscuro {
+  border-color: #33474a;
+  background: transparent;
+  color: var(--oscuro-texto);
+}
+
+.chip-oscuro:hover {
+  border-color: var(--verde);
+  color: #ffffff;
+}
+
+.chip-oscuro.activo {
+  background: var(--verde);
+  border-color: var(--verde);
+  color: var(--oscuro);
+}
+
+.total-movil {
+  margin-left: auto;
+  font-size: 13.5px;
+  font-weight: 800;
+  color: var(--verde-texto);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* ============================================================
    Consulta: tabla (escritorio)
    ============================================================ */
 .tabla-creditos {
@@ -789,12 +873,39 @@ main {
     display: flex;
   }
 
-  .boton-limpiar {
-    margin-left: 0;
+  /* En consulta, el panel de tres filtros y el título dan paso al
+     buscador único con selector de campo. */
+  .encabezado-consulta,
+  .panel-filtros {
+    display: none;
   }
 
-  .orden-controles {
-    gap: 8px;
+  .controles-movil {
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+    /* Se extiende de borde a borde, cancelando el padding de <main>,
+       para quedar pegado al encabezado oscuro de la app. */
+    margin: -22px -18px 0;
+    padding: 14px 16px 16px;
+    background: var(--oscuro);
+  }
+
+  .barra-orden-movil {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    flex-wrap: wrap;
+  }
+
+  /* Los chips son controles táctiles: 44px de alto mínimo. */
+  .chips-campo .chip,
+  .barra-orden-movil .chip {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 16px;
   }
 }
 

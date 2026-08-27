@@ -11,6 +11,17 @@ const formatoFecha = new Intl.DateTimeFormat("es-CO", {
   timeStyle: "short",
 });
 
+// Los tres campos por los que se puede filtrar. En escritorio se muestran como
+// tres cajas separadas (se pueden combinar); en móvil se muestra un solo
+// buscador y estos chips deciden a cuál de los tres se aplica lo escrito.
+const CAMPOS_BUSQUEDA = [
+  { clave: "nombreCliente", etiqueta: "Cliente", placeholder: "Buscar por nombre" },
+  { clave: "cedula", etiqueta: "Cédula", placeholder: "Buscar por documento" },
+  { clave: "comercial", etiqueta: "Comercial", placeholder: "Buscar por comercial" },
+];
+
+const FILTROS_VACIOS = { nombreCliente: "", cedula: "", comercial: "" };
+
 // Flecha de dirección del orden. Se dibuja en SVG (no con un carácter) para
 // que mantenga el mismo grosor y tamaño en cualquier plataforma.
 function IconoDireccion({ ascendente }) {
@@ -39,11 +50,14 @@ function IconoDireccion({ ascendente }) {
  * a pedir la lista al backend (el filtrado/orden real ocurre en la base de
  * datos, no en el navegador, para que escale con muchos registros).
  *
- * Los mismos datos se pintan de dos formas y el CSS decide cuál se ve:
- * una tabla en escritorio y una lista de cards en móvil (ver App.css).
+ * La misma información se pinta dos veces y el CSS decide cuál se ve:
+ *   - escritorio: panel con los tres filtros + tabla
+ *   - móvil: un buscador con selector de campo + lista de cards
+ * El estado es uno solo (`filtros`), así que ambas vistas siempre coinciden.
  */
 export default function CreditosTable({ refrescarSenal }) {
-  const [filtros, setFiltros] = useState({ nombreCliente: "", cedula: "", comercial: "" });
+  const [filtros, setFiltros] = useState(FILTROS_VACIOS);
+  const [campoBusqueda, setCampoBusqueda] = useState("nombreCliente");
   const [sortBy, setSortBy] = useState("fecha");
   const [sortDir, setSortDir] = useState("desc");
   const [creditos, setCreditos] = useState([]);
@@ -73,6 +87,20 @@ export default function CreditosTable({ refrescarSenal }) {
     setFiltros((previo) => ({ ...previo, [campo]: valor }));
   }
 
+  // Móvil: lo escrito en el buscador único se guarda en el campo elegido, y
+  // los otros dos se limpian (solo se filtra por uno a la vez en esta vista).
+  function actualizarBusqueda(valor) {
+    setFiltros({ ...FILTROS_VACIOS, [campoBusqueda]: valor });
+  }
+
+  // Al cambiar de chip, el texto escrito se lleva al campo nuevo, para no
+  // obligar a reescribirlo si el usuario solo se equivocó de columna.
+  function cambiarCampoBusqueda(campo) {
+    const textoActual = filtros[campoBusqueda];
+    setCampoBusqueda(campo);
+    setFiltros({ ...FILTROS_VACIOS, [campo]: textoActual });
+  }
+
   function cambiarOrden(campo) {
     if (sortBy === campo) {
       setSortDir((previo) => (previo === "asc" ? "desc" : "asc"));
@@ -91,16 +119,31 @@ export default function CreditosTable({ refrescarSenal }) {
     sortDir !== "desc";
 
   function limpiarFiltros() {
-    setFiltros({ nombreCliente: "", cedula: "", comercial: "" });
+    setFiltros(FILTROS_VACIOS);
     setSortBy("fecha");
     setSortDir("desc");
   }
 
-  const totalColocado = creditos.reduce((suma, c) => suma + Number(c.valorCredito || 0), 0);
+  const campoActivo =
+    CAMPOS_BUSQUEDA.find((c) => c.clave === campoBusqueda) ?? CAMPOS_BUSQUEDA[0];
+  const textoBusqueda = filtros[campoBusqueda];
+  const totalColocado = creditos.reduce(
+    (suma, c) => suma + Number(c.valorCredito || 0),
+    0,
+  );
+  const etiquetaDireccion =
+    sortDir === "desc"
+      ? sortBy === "fecha"
+        ? "Más recientes"
+        : "Mayor"
+      : sortBy === "fecha"
+        ? "Más antiguos"
+        : "Menor";
 
   return (
     <>
-      <div className="encabezado-seccion">
+      {/* Solo escritorio: título + total */}
+      <div className="encabezado-seccion encabezado-consulta">
         <div>
           <h2>Consultar créditos</h2>
           <p>
@@ -118,38 +161,114 @@ export default function CreditosTable({ refrescarSenal }) {
       </div>
 
       <div className="consulta-creditos">
+        {/* ---------- Controles móvil: un buscador + selector de campo ---------- */}
+        <div className="controles-movil">
+          <div className="buscador-movil">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.9"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <circle cx="11" cy="11" r="7" />
+              <path d="m20 20-3.2-3.2" />
+            </svg>
+            <input
+              type="text"
+              aria-label={`Buscar por ${campoActivo.etiqueta}`}
+              placeholder={campoActivo.placeholder}
+              value={textoBusqueda}
+              onChange={(e) => actualizarBusqueda(e.target.value)}
+            />
+            {textoBusqueda !== "" && (
+              <button
+                type="button"
+                className="limpiar-busqueda"
+                aria-label="Limpiar búsqueda"
+                onClick={() => actualizarBusqueda("")}
+              >
+                <svg
+                  width="15"
+                  height="15"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.2"
+                  strokeLinecap="round"
+                  aria-hidden="true"
+                >
+                  <path d="M18 6 6 18" />
+                  <path d="m6 6 12 12" />
+                </svg>
+              </button>
+            )}
+          </div>
+
+          <div className="chips-campo">
+            {CAMPOS_BUSQUEDA.map((campo) => (
+              <button
+                key={campo.clave}
+                type="button"
+                className={`chip chip-oscuro ${campoBusqueda === campo.clave ? "activo" : ""}`}
+                onClick={() => cambiarCampoBusqueda(campo.clave)}
+              >
+                {campo.etiqueta}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Solo móvil: orden en una línea, con el total al lado */}
+        <div className="barra-orden-movil">
+          <button
+            type="button"
+            className={`chip ${sortBy === "fecha" ? "activo" : ""}`}
+            onClick={() => setSortBy("fecha")}
+          >
+            Fecha
+          </button>
+          <button
+            type="button"
+            className={`chip ${sortBy === "valor" ? "activo" : ""}`}
+            onClick={() => setSortBy("valor")}
+          >
+            Valor
+          </button>
+          <button
+            type="button"
+            className="chip chip-direccion"
+            onClick={() => setSortDir((previo) => (previo === "asc" ? "desc" : "asc"))}
+          >
+            <IconoDireccion ascendente={sortDir === "asc"} />
+            {etiquetaDireccion}
+          </button>
+          {creditos.length > 0 && (
+            <span className="total-movil">{formatoMoneda.format(totalColocado)}</span>
+          )}
+        </div>
+
+        {/* ---------- Panel de filtros: solo escritorio ---------- */}
         <div className="panel-filtros">
           <div className="filtros">
-            <div className="campo">
-              <label htmlFor="filtro-cliente">Cliente</label>
-              <input
-                id="filtro-cliente"
-                type="text"
-                placeholder="Buscar por nombre"
-                value={filtros.nombreCliente}
-                onChange={(e) => actualizarFiltro("nombreCliente", e.target.value)}
-              />
-            </div>
-            <div className="campo">
-              <label htmlFor="filtro-cedula">Cédula / ID</label>
-              <input
-                id="filtro-cedula"
-                type="text"
-                placeholder="Buscar por documento"
-                value={filtros.cedula}
-                onChange={(e) => actualizarFiltro("cedula", e.target.value)}
-              />
-            </div>
-            <div className="campo">
-              <label htmlFor="filtro-comercial">Comercial</label>
-              <input
-                id="filtro-comercial"
-                type="text"
-                placeholder="Buscar por comercial"
-                value={filtros.comercial}
-                onChange={(e) => actualizarFiltro("comercial", e.target.value)}
-              />
-            </div>
+            {CAMPOS_BUSQUEDA.map((campo) => (
+              <div className="campo" key={campo.clave}>
+                <label htmlFor={`filtro-${campo.clave}`}>
+                  {campo.clave === "cedula" ? "Cédula / ID" : campo.etiqueta}
+                </label>
+                <input
+                  id={`filtro-${campo.clave}`}
+                  type="text"
+                  placeholder={campo.placeholder}
+                  value={filtros[campo.clave]}
+                  onChange={(e) => actualizarFiltro(campo.clave, e.target.value)}
+                />
+              </div>
+            ))}
           </div>
 
           <div className="orden-controles">
@@ -177,13 +296,7 @@ export default function CreditosTable({ refrescarSenal }) {
               onClick={() => setSortDir((previo) => (previo === "asc" ? "desc" : "asc"))}
             >
               <IconoDireccion ascendente={sortDir === "asc"} />
-              {sortDir === "desc"
-                ? sortBy === "fecha"
-                  ? "Más recientes"
-                  : "Mayor valor"
-                : sortBy === "fecha"
-                  ? "Más antiguos"
-                  : "Menor valor"}
+              {etiquetaDireccion}
             </button>
 
             <button
@@ -251,7 +364,7 @@ export default function CreditosTable({ refrescarSenal }) {
             <div className="lista-creditos">
               {creditos.length === 0 && (
                 <p className="estado-consulta">
-                  No hay créditos registrados que coincidan con el filtro.
+                  No hay créditos que coincidan con la búsqueda.
                 </p>
               )}
               {creditos.map((credito) => (
@@ -272,7 +385,9 @@ export default function CreditosTable({ refrescarSenal }) {
                     </div>
                     <div className="card-credito-dato">
                       <span>Plazo</span>
-                      <strong>{credito.plazoMeses} meses</strong>
+                      <strong>
+                        {credito.plazoMeses} {credito.plazoMeses === 1 ? "mes" : "meses"}
+                      </strong>
                     </div>
                     <div className="card-credito-dato">
                       <span>Registrado</span>
