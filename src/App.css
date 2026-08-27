@@ -1,262 +1,809 @@
+/* ============================================================
+   Layout general
+   ============================================================ */
 .app-creditos {
-  max-width: 760px;
-  margin: 0 auto;
-  padding: 24px 16px 48px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
 }
 
-header h1 {
-  font-size: 26px;
-  margin: 0 0 16px;
+/* ---------- Barra superior ---------- */
+.barra-superior {
+  background: var(--oscuro);
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  padding: 0 44px;
+  height: 66px;
+  flex-shrink: 0;
 }
 
-header nav {
+.logo-fya {
+  width: 88px;
+  height: auto;
+  display: block;
+}
+
+.barra-superior nav {
   display: flex;
   gap: 8px;
-  margin-bottom: 24px;
-  border-bottom: 1px solid var(--border);
+  align-items: center;
 }
 
-header nav button {
+.barra-superior nav button {
   border: none;
-  background: none;
-  padding: 10px 16px;
-  font-size: 15px;
+  background: transparent;
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-family: inherit;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--oscuro-texto);
   cursor: pointer;
-  color: var(--text-muted);
-  border-bottom: 2px solid transparent;
 }
 
-header nav button.activo {
-  color: var(--primary);
-  border-bottom-color: var(--primary);
-  font-weight: 600;
+.barra-superior nav button:hover {
+  color: var(--oscuro-texto-claro);
 }
 
-header nav button.boton-cerrar-sesion {
+.barra-superior nav button.activo {
+  background: var(--verde);
+  color: var(--oscuro);
+  font-weight: 700;
+}
+
+.usuario-sesion {
+  display: flex;
+  align-items: center;
+  gap: 12px;
   margin-left: auto;
-  color: var(--error);
 }
 
-/* --- Login --- */
+.avatar-usuario {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--oscuro-3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--verde);
+  flex-shrink: 0;
+}
+
+.nombre-usuario {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--oscuro-texto-claro);
+}
+
+.boton-cerrar-sesion {
+  border: none;
+  background: transparent;
+  padding: 8px 4px;
+  font-family: inherit;
+  font-size: 13px;
+  color: var(--oscuro-texto);
+  cursor: pointer;
+}
+
+.boton-cerrar-sesion:hover {
+  color: #ffffff;
+}
+
+/* ---------- Contenido ---------- */
+main {
+  flex-grow: 1;
+  padding: 30px 44px 44px;
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.encabezado-seccion {
+  display: flex;
+  align-items: flex-end;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 22px;
+}
+
+.encabezado-seccion h2 {
+  margin: 0 0 4px;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+}
+
+.encabezado-seccion p {
+  margin: 0;
+  font-size: 13.5px;
+  color: var(--text-muted);
+}
+
+.total-colocado {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: var(--verde-suave);
+  border: 1px solid var(--verde-borde);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--verde-texto);
+}
+
+.total-colocado strong {
+  font-size: 15px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ============================================================
+   Login
+   ============================================================ */
 .pantalla-login {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 16px;
+  padding: 32px 18px;
+  background: radial-gradient(
+    ellipse 100% 60% at 50% 0%,
+    #1e4438 0%,
+    #142b2a 45%,
+    #102123 100%
+  );
+}
+
+.contenedor-login {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.logo-login {
+  width: 150px;
+  height: auto;
+  display: block;
 }
 
 .formulario-login {
   width: 100%;
-  max-width: 360px;
+  background: var(--surface);
+  border-radius: 16px;
+  padding: 32px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 28px 24px;
+  gap: 22px;
 }
 
 .formulario-login h1 {
-  font-size: 22px;
+  font-size: 21px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
   margin: 0;
-  text-align: center;
 }
 
 .subtitulo-login {
-  margin: 0 0 6px;
-  text-align: center;
+  margin: -16px 0 0;
+  font-size: 13.5px;
   color: var(--text-muted);
-  font-size: 14px;
 }
 
-.formulario-login button[type="submit"] {
-  margin-top: 6px;
-  padding: 11px;
-  background: var(--primary);
-  color: white;
-  border: none;
-  border-radius: 6px;
-  font-size: 15px;
-  font-weight: 600;
-  cursor: pointer;
+.pie-login {
+  margin: 0;
+  font-size: 12px;
+  color: #7c918b;
+  text-align: center;
 }
 
-.formulario-login button[type="submit"]:hover {
-  background: var(--primary-hover);
-}
-
-.formulario-login button[type="submit"]:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-/* --- Formulario --- */
-.formulario-credito {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 20px;
-}
-
+/* ============================================================
+   Campos de formulario (compartidos)
+   ============================================================ */
 .campo {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
 }
 
 .campo label {
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 600;
+  color: var(--text-medio);
 }
 
-.campo input {
-  padding: 9px 10px;
+.campo input,
+.campo select {
+  padding: 11px 13px;
   border: 1px solid var(--border);
-  border-radius: 6px;
-  font-size: 15px;
+  border-radius: var(--radio-campo);
+  background: var(--bg);
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--text);
+  outline: none;
 }
 
-.campo input:focus {
-  outline: 2px solid var(--primary);
-  outline-offset: 1px;
+.campo input::placeholder {
+  color: var(--text-tenue);
+}
+
+.campo input:focus,
+.campo select:focus {
+  border-color: var(--verde);
+  background: var(--surface);
+  box-shadow: 0 0 0 3px rgba(110, 205, 137, 0.18);
+}
+
+.campo-con-sufijo {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 11px 13px;
+  border: 1px solid var(--border);
+  border-radius: var(--radio-campo);
+  background: var(--bg);
+}
+
+.campo-con-sufijo:focus-within {
+  border-color: var(--verde);
+  background: var(--surface);
+  box-shadow: 0 0 0 3px rgba(110, 205, 137, 0.18);
+}
+
+.campo-con-sufijo input {
+  border: none;
+  background: transparent;
+  padding: 0;
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--text);
+  outline: none;
+  flex-grow: 1;
+  min-width: 0;
+}
+
+.campo-con-sufijo span {
+  font-size: 13px;
+  color: var(--text-tenue);
+  flex-shrink: 0;
+}
+
+/* Campo destacado del valor del crédito */
+.campo-valor .campo-con-sufijo {
+  border: 1.5px solid var(--verde);
+  background: var(--surface);
+  padding: 9px 13px;
+}
+
+.campo-valor .prefijo-moneda {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--verde);
+}
+
+.campo-valor input {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.ayuda-campo {
+  font-size: 11.5px;
+  color: var(--text-tenue);
 }
 
 .error-campo {
   color: var(--error);
-  font-size: 13px;
+  font-size: 12.5px;
+  font-weight: 500;
 }
 
-.formulario-credito button[type="submit"] {
-  margin-top: 6px;
-  padding: 11px;
-  background: var(--primary);
-  color: white;
+/* ============================================================
+   Botones
+   ============================================================ */
+.boton-primario {
+  padding: 13px 30px;
   border: none;
-  border-radius: 6px;
-  font-size: 15px;
-  font-weight: 600;
+  border-radius: 999px;
+  background: var(--verde);
+  color: var(--oscuro);
+  font-family: inherit;
+  font-size: 14.5px;
+  font-weight: 700;
   cursor: pointer;
 }
 
-.formulario-credito button[type="submit"]:hover {
-  background: var(--primary-hover);
+.boton-primario:hover:not(:disabled) {
+  background: #5cbd79;
 }
 
-.formulario-credito button[type="submit"]:disabled {
-  opacity: 0.6;
+.boton-primario:disabled {
+  opacity: 0.55;
   cursor: not-allowed;
 }
 
-.mensaje {
-  padding: 10px 12px;
-  border-radius: 6px;
-  font-size: 14px;
-}
-
-.mensaje-exito {
-  background: var(--success-bg);
-  color: var(--success);
-}
-
-.mensaje-error {
-  background: var(--error-bg);
-  color: var(--error);
-}
-
-/* --- Consulta --- */
-.filtros {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 16px;
-  flex-wrap: wrap;
-}
-
-.filtros input {
-  flex: 1 1 160px;
-  padding: 9px 10px;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  font-size: 14px;
-}
-
-.orden-controles {
-  display: flex;
-  gap: 12px;
-  align-items: flex-end;
-  flex-wrap: wrap;
-  margin-bottom: 16px;
-}
-
-.orden-controles label {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+.boton-texto {
+  border: none;
+  background: transparent;
+  padding: 8px 4px;
+  font-family: inherit;
   font-size: 13px;
   font-weight: 600;
   color: var(--text-muted);
-}
-
-.orden-controles select {
-  padding: 8px 10px;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  font-size: 14px;
-  background: var(--surface);
-}
-
-.orden-controles .boton-limpiar {
-  padding: 9px 14px;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  background: var(--surface);
-  color: var(--text);
-  font-size: 14px;
-  font-weight: 600;
   cursor: pointer;
 }
 
-.orden-controles .boton-limpiar:hover:not(:disabled) {
-  border-color: var(--primary);
-  color: var(--primary);
+.boton-texto:hover:not(:disabled) {
+  color: var(--text);
 }
 
-.orden-controles .boton-limpiar:disabled {
+.boton-texto:disabled {
   opacity: 0.45;
   cursor: not-allowed;
 }
 
-table {
+/* ============================================================
+   Mensajes
+   ============================================================ */
+.mensaje {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  padding: 13px 16px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.mensaje-exito {
+  background: var(--verde-suave);
+  border: 1px solid var(--verde-borde);
+  color: var(--verde-texto);
+}
+
+.mensaje-error {
+  background: var(--error-bg);
+  border: 1px solid #f5c6c0;
+  color: var(--error);
+}
+
+/* ============================================================
+   Tarjeta contenedora
+   ============================================================ */
+.tarjeta {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radio);
+  overflow: hidden;
+}
+
+.tarjeta-titulo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px 24px;
+  border-bottom: 1px solid var(--border-suave);
+  font-size: 12.5px;
+  font-weight: 700;
+}
+
+.tarjeta-titulo::before {
+  content: "";
+  width: 4px;
+  height: 15px;
+  border-radius: 2px;
+  background: var(--verde);
+}
+
+/* ============================================================
+   Formulario de registro
+   ============================================================ */
+.formulario-credito {
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.campos-credito {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.fila-doble {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.acciones-formulario {
+  padding: 16px 24px;
+  border-top: 1px solid var(--border-suave);
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+/* ============================================================
+   Consulta: filtros
+   ============================================================ */
+.consulta-creditos {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.panel-filtros {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radio);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.filtros {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.orden-controles {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding-top: 14px;
+  border-top: 1px solid var(--border-suave);
+}
+
+.etiqueta-orden {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-medio);
+}
+
+.chips-orden {
+  display: flex;
+  gap: 6px;
+}
+
+.chip {
+  padding: 7px 15px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.chip:hover {
+  border-color: var(--verde);
+  color: var(--text);
+}
+
+.chip.activo {
+  background: var(--verde);
+  border-color: var(--verde);
+  color: var(--oscuro);
+  font-weight: 700;
+}
+
+.chip-direccion {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text);
+  font-weight: 600;
+}
+
+.chip-direccion svg {
+  flex-shrink: 0;
+}
+
+.boton-limpiar {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ============================================================
+   Consulta: tabla (escritorio)
+   ============================================================ */
+.tabla-creditos {
   width: 100%;
   border-collapse: collapse;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 10px;
+  border-radius: var(--radio);
   overflow: hidden;
-  font-size: 14px;
+  font-size: 13.5px;
 }
 
-th,
-td {
-  padding: 10px 12px;
+.tabla-creditos thead {
+  background: var(--oscuro);
+}
+
+.tabla-creditos th {
+  padding: 13px 20px;
   text-align: left;
-  border-bottom: 1px solid var(--border);
-}
-
-th {
-  background: #eef1f8;
+  font-size: 11.5px;
   font-weight: 600;
+  color: #b7c9c3;
+  white-space: nowrap;
 }
 
-th.ordenable {
+.tabla-creditos th.ordenable {
   cursor: pointer;
   user-select: none;
 }
 
-tbody tr:last-child td {
+.tabla-creditos th.ordenable:hover {
+  color: var(--verde);
+}
+
+.tabla-creditos td {
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border-suave);
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.tabla-creditos tbody tr:nth-child(even) {
+  background: var(--surface-alt);
+}
+
+.tabla-creditos tbody tr:last-child td {
   border-bottom: none;
+}
+
+.celda-cliente {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.celda-valor {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--verde-texto);
+  text-align: right;
+  white-space: nowrap;
+}
+
+.celda-num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.celda-vacia {
+  padding: 32px 20px;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+/* ============================================================
+   Consulta: cards (móvil)
+   ============================================================ */
+.lista-creditos {
+  display: none;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.card-credito {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--verde);
+  border-radius: var(--radio);
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+}
+
+.card-credito-cabecera {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.card-credito-cliente {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.card-credito-cliente strong {
+  font-size: 14.5px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.card-credito-cliente span {
+  font-size: 12px;
+  color: var(--text-tenue);
+  font-variant-numeric: tabular-nums;
+}
+
+.card-credito-valor {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--verde-texto);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.card-credito-detalle {
+  display: flex;
+  gap: 20px;
+  padding-top: 11px;
+  border-top: 1px solid var(--border-suave);
+}
+
+.card-credito-dato {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.card-credito-dato:last-child {
+  margin-left: auto;
+  align-items: flex-end;
+  text-align: right;
+}
+
+.card-credito-dato span {
+  font-size: 11px;
+  color: var(--text-tenue);
+}
+
+.card-credito-dato strong {
+  font-size: 12.5px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.conteo-creditos {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.estado-consulta {
+  padding: 24px;
+  text-align: center;
+  font-size: 13.5px;
+  color: var(--text-muted);
+}
+
+/* ============================================================
+   Responsive
+   ============================================================ */
+@media (max-width: 900px) {
+  main {
+    padding: 22px 18px 88px;
+  }
+
+  .barra-superior {
+    padding: 0 18px;
+    gap: 16px;
+  }
+
+  /* La navegación pasa a barra inferior fija */
+  .barra-superior nav {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 20;
+    gap: 0;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding: 0;
+  }
+
+  .barra-superior nav button {
+    flex-grow: 1;
+    border-radius: 0;
+    height: 62px;
+    font-size: 12px;
+    color: var(--text-tenue);
+  }
+
+  .barra-superior nav button.activo {
+    background: var(--surface);
+    color: var(--verde-texto);
+    box-shadow: inset 0 2px 0 var(--verde);
+  }
+
+  .nombre-usuario {
+    display: none;
+  }
+
+  .encabezado-seccion h2 {
+    font-size: 20px;
+  }
+
+  .total-colocado {
+    margin-left: 0;
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .filtros {
+    grid-template-columns: 1fr;
+  }
+
+  .fila-doble {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .campos-credito,
+  .acciones-formulario {
+    padding: 16px;
+  }
+
+  .tarjeta-titulo {
+    padding: 14px 16px;
+  }
+
+  .acciones-formulario {
+    flex-direction: column-reverse;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  .boton-primario {
+    width: 100%;
+    padding: 15px 24px;
+  }
+
+  /* La tabla se cambia por cards */
+  .tabla-creditos {
+    display: none;
+  }
+
+  .lista-creditos {
+    display: flex;
+  }
+
+  .boton-limpiar {
+    margin-left: 0;
+  }
+
+  .orden-controles {
+    gap: 8px;
+  }
+}
+
+@media (max-width: 420px) {
+  .fila-doble {
+    grid-template-columns: 1fr;
+  }
+
+  .formulario-login {
+    padding: 24px 20px;
+  }
 }

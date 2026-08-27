@@ -33,8 +33,11 @@ export default function App() {
 
   return (
     <div className="app-creditos">
-      <header>
-        <h1>App de Créditos</h1>
+      {/* En escritorio esta barra contiene la navegación; en móvil, el CSS
+          mueve el <nav> al pie de la pantalla como barra de pestañas. */}
+      <header className="barra-superior">
+        <img src="/logo-fya.png" alt="Fya Social Capital" className="logo-fya" />
+
         <nav>
           <button
             className={pestanaActiva === "registrar" ? "activo" : ""}
@@ -48,10 +51,17 @@ export default function App() {
           >
             Consultar créditos
           </button>
-          <button className="boton-cerrar-sesion" onClick={cerrarSesion}>
-            Cerrar sesión
-          </button>
         </nav>
+
+        <div className="usuario-sesion">
+          <span className="avatar-usuario" aria-hidden="true">
+            FY
+          </span>
+          <span className="nombre-usuario">comercial</span>
+          <button className="boton-cerrar-sesion" onClick={cerrarSesion}>
+            Salir
+          </button>
+        </div>
       </header>
 
       <main>

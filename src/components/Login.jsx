@@ -36,37 +36,47 @@ export default function Login({ onLoginExitoso }) {
 
   return (
     <div className="pantalla-login">
-      <form className="formulario-login" onSubmit={manejarEnvio} noValidate>
-        <h1>App de Créditos</h1>
-        <p className="subtitulo-login">Ingresa con el usuario del equipo comercial</p>
+      <div className="contenedor-login">
+        <img src="/logo-fya.png" alt="Fya Social Capital" className="logo-login" />
 
-        <div className="campo">
-          <label htmlFor="usuario">Usuario</label>
-          <input
-            id="usuario"
-            type="text"
-            autoFocus
-            value={usuario}
-            onChange={(e) => setUsuario(e.target.value)}
-          />
-        </div>
+        <form className="formulario-login" onSubmit={manejarEnvio} noValidate>
+          <h1>Ingresar</h1>
+          <p className="subtitulo-login">Usa el usuario del equipo comercial.</p>
 
-        <div className="campo">
-          <label htmlFor="password">Contraseña</label>
-          <input
-            id="password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
+          <div className="campo">
+            <label htmlFor="usuario">Usuario</label>
+            <input
+              id="usuario"
+              type="text"
+              autoFocus
+              autoComplete="username"
+              value={usuario}
+              onChange={(e) => setUsuario(e.target.value)}
+            />
+          </div>
 
-        <button type="submit" disabled={enviando}>
-          {enviando ? "Ingresando..." : "Ingresar"}
-        </button>
+          <div className="campo">
+            <label htmlFor="password">Contraseña</label>
+            <input
+              id="password"
+              type="password"
+              autoComplete="current-password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
 
-        {error && <p className="mensaje mensaje-error">{error}</p>}
-      </form>
+          <button type="submit" className="boton-primario" disabled={enviando}>
+            {enviando ? "Ingresando..." : "Ingresar"}
+          </button>
+
+          {error && <p className="mensaje mensaje-error">{error}</p>}
+        </form>
+
+        <p className="pie-login">
+          ¿Olvidaste la contraseña? Escríbele al área de sistemas.
+        </p>
+      </div>
     </div>
   );
 }

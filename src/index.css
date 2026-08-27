@@ -1,17 +1,37 @@
+/* Identidad Fya Social Capital.
+   Los colores salen de la marca: verde #6ECD89 y oscuro institucional #102123.
+   --verde-texto es una variante más profunda del verde, necesaria porque
+   #6ECD89 sobre blanco no alcanza contraste suficiente para texto. */
 :root {
-  --text: #2b2b33;
-  --text-muted: #6b6375;
-  --bg: #f5f6fa;
+  --oscuro: #102123;
+  --oscuro-2: #1b3334;
+  --oscuro-3: #1e4438;
+  --oscuro-texto: #93a8a2;
+  --oscuro-texto-claro: #e4ede9;
+
+  --verde: #6ecd89;
+  --verde-texto: #2f7d51;
+  --verde-suave: #eaf7ef;
+  --verde-borde: #c3e8d1;
+
+  --text: #14262a;
+  --text-medio: #40544e;
+  --text-muted: #667a73;
+  --text-tenue: #8a9a94;
+
+  --bg: #f6f8f7;
   --surface: #ffffff;
-  --border: #dcdde3;
-  --primary: #2f6fed;
-  --primary-hover: #2559c4;
-  --success: #1f8a4c;
-  --success-bg: #e8f7ee;
+  --surface-alt: #fafcfb;
+  --border: #e3e8e5;
+  --border-suave: #f0f3f1;
+
   --error: #c0392b;
   --error-bg: #fdecea;
 
-  font: 16px/1.5 system-ui, "Segoe UI", Roboto, sans-serif;
+  --radio: 12px;
+  --radio-campo: 9px;
+
+  font: 16px/1.5 "Montserrat", system-ui, "Segoe UI", Roboto, sans-serif;
   color: var(--text);
   background: var(--bg);
   color-scheme: light;
@@ -23,6 +43,7 @@
 
 body {
   margin: 0;
+  -webkit-font-smoothing: antialiased;
 }
 
 #root {

@@ -35,6 +35,12 @@ export default function CreditoForm({ onCreditoRegistrado }) {
     setValores((previo) => ({ ...previo, [campo]: valor }));
   }
 
+  function limpiarFormulario() {
+    setValores(VALORES_INICIALES);
+    setErrores({});
+    setMensaje(null);
+  }
+
   async function manejarEnvio(evento) {
     evento.preventDefault();
     setMensaje(null);
@@ -56,7 +62,10 @@ export default function CreditoForm({ onCreditoRegistrado }) {
         comercial: valores.comercial.trim(),
       });
 
-      setMensaje({ tipo: "exito", texto: "Crédito registrado correctamente. Se notificará por correo automáticamente." });
+      setMensaje({
+        tipo: "exito",
+        texto: "Crédito registrado correctamente. Se notificará por correo automáticamente.",
+      });
       setValores(VALORES_INICIALES);
       setErrores({});
       onCreditoRegistrado?.();
@@ -68,85 +77,143 @@ export default function CreditoForm({ onCreditoRegistrado }) {
   }
 
   return (
-    <form className="formulario-credito" onSubmit={manejarEnvio} noValidate>
-      <div className="campo">
-        <label htmlFor="nombreCliente">Nombre del cliente</label>
-        <input
-          id="nombreCliente"
-          type="text"
-          value={valores.nombreCliente}
-          onChange={(e) => actualizarCampo("nombreCliente", e.target.value)}
-        />
-        {errores.nombreCliente && <span className="error-campo">{errores.nombreCliente}</span>}
+    <>
+      <div className="encabezado-seccion">
+        <div>
+          <h2>Registrar crédito</h2>
+          <p>Al guardar se notifica automáticamente por correo al área de crédito.</p>
+        </div>
       </div>
 
-      <div className="campo">
-        <label htmlFor="cedula">Cédula o ID</label>
-        <input
-          id="cedula"
-          type="text"
-          value={valores.cedula}
-          onChange={(e) => actualizarCampo("cedula", e.target.value)}
-        />
-        {errores.cedula && <span className="error-campo">{errores.cedula}</span>}
-      </div>
+      <form className="formulario-credito" onSubmit={manejarEnvio} noValidate>
+        {mensaje && (
+          <p className={`mensaje mensaje-${mensaje.tipo}`}>{mensaje.texto}</p>
+        )}
 
-      <div className="campo">
-        <label htmlFor="valorCredito">Valor del crédito</label>
-        <input
-          id="valorCredito"
-          type="text"
-          inputMode="numeric"
-          placeholder="Ej: 5.000.000"
-          value={valores.valorCredito === "" ? "" : formatoMiles.format(Number(valores.valorCredito))}
-          onChange={(e) => actualizarCampo("valorCredito", e.target.value.replace(/\D/g, ""))}
-        />
-        {errores.valorCredito && <span className="error-campo">{errores.valorCredito}</span>}
-      </div>
+        <div className="tarjeta">
+          <div className="tarjeta-titulo">Datos del crédito</div>
 
-      <div className="campo">
-        <label htmlFor="tasaInteres">Tasa de interés (%)</label>
-        <input
-          id="tasaInteres"
-          type="number"
-          min="0"
-          max="100"
-          step="0.01"
-          value={valores.tasaInteres}
-          onChange={(e) => actualizarCampo("tasaInteres", e.target.value)}
-        />
-        {errores.tasaInteres && <span className="error-campo">{errores.tasaInteres}</span>}
-      </div>
+          <div className="campos-credito">
+            <div className="campo campo-valor">
+              <label htmlFor="valorCredito">Valor del crédito</label>
+              <div className="campo-con-sufijo">
+                <span className="prefijo-moneda">$</span>
+                <input
+                  id="valorCredito"
+                  type="text"
+                  inputMode="numeric"
+                  placeholder="5.000.000"
+                  value={
+                    valores.valorCredito === ""
+                      ? ""
+                      : formatoMiles.format(Number(valores.valorCredito))
+                  }
+                  onChange={(e) =>
+                    actualizarCampo("valorCredito", e.target.value.replace(/\D/g, ""))
+                  }
+                />
+              </div>
+              {errores.valorCredito ? (
+                <span className="error-campo">{errores.valorCredito}</span>
+              ) : (
+                <span className="ayuda-campo">Máximo 1.000.000.000</span>
+              )}
+            </div>
 
-      <div className="campo">
-        <label htmlFor="plazoMeses">Plazo en meses</label>
-        <input
-          id="plazoMeses"
-          type="number"
-          min="1"
-          step="1"
-          value={valores.plazoMeses}
-          onChange={(e) => actualizarCampo("plazoMeses", e.target.value)}
-        />
-        {errores.plazoMeses && <span className="error-campo">{errores.plazoMeses}</span>}
-      </div>
+            <div className="campo">
+              <label htmlFor="nombreCliente">Nombre del cliente</label>
+              <input
+                id="nombreCliente"
+                type="text"
+                value={valores.nombreCliente}
+                onChange={(e) => actualizarCampo("nombreCliente", e.target.value)}
+              />
+              {errores.nombreCliente && (
+                <span className="error-campo">{errores.nombreCliente}</span>
+              )}
+            </div>
 
-      <div className="campo">
-        <label htmlFor="comercial">Comercial que registra el crédito</label>
-        <input
-          id="comercial"
-          type="text"
-          value={valores.comercial}
-          onChange={(e) => actualizarCampo("comercial", e.target.value)}
-        />
-        {errores.comercial && <span className="error-campo">{errores.comercial}</span>}
-      </div>
+            <div className="fila-doble">
+              <div className="campo">
+                <label htmlFor="cedula">Cédula o ID</label>
+                <input
+                  id="cedula"
+                  type="text"
+                  value={valores.cedula}
+                  onChange={(e) => actualizarCampo("cedula", e.target.value)}
+                />
+                {errores.cedula && <span className="error-campo">{errores.cedula}</span>}
+              </div>
 
-      <button type="submit" disabled={enviando}>
-        {enviando ? "Registrando..." : "Guardar crédito"}
-      </button>
+              <div className="campo">
+                <label htmlFor="comercial">Comercial que registra</label>
+                <input
+                  id="comercial"
+                  type="text"
+                  value={valores.comercial}
+                  onChange={(e) => actualizarCampo("comercial", e.target.value)}
+                />
+                {errores.comercial && (
+                  <span className="error-campo">{errores.comercial}</span>
+                )}
+              </div>
+            </div>
 
-      {mensaje && <p className={`mensaje mensaje-${mensaje.tipo}`}>{mensaje.texto}</p>}
-    </form>
+            <div className="fila-doble">
+              <div className="campo">
+                <label htmlFor="tasaInteres">Tasa de interés</label>
+                <div className="campo-con-sufijo">
+                  <input
+                    id="tasaInteres"
+                    type="number"
+                    min="0"
+                    max="100"
+                    step="0.01"
+                    value={valores.tasaInteres}
+                    onChange={(e) => actualizarCampo("tasaInteres", e.target.value)}
+                  />
+                  <span>%</span>
+                </div>
+                {errores.tasaInteres && (
+                  <span className="error-campo">{errores.tasaInteres}</span>
+                )}
+              </div>
+
+              <div className="campo">
+                <label htmlFor="plazoMeses">Plazo</label>
+                <div className="campo-con-sufijo">
+                  <input
+                    id="plazoMeses"
+                    type="number"
+                    min="1"
+                    step="1"
+                    value={valores.plazoMeses}
+                    onChange={(e) => actualizarCampo("plazoMeses", e.target.value)}
+                  />
+                  <span>meses</span>
+                </div>
+                {errores.plazoMeses && (
+                  <span className="error-campo">{errores.plazoMeses}</span>
+                )}
+              </div>
+            </div>
+          </div>
+
+          <div className="acciones-formulario">
+            <button type="submit" className="boton-primario" disabled={enviando}>
+              {enviando ? "Registrando..." : "Guardar crédito"}
+            </button>
+            <button
+              type="button"
+              className="boton-texto"
+              onClick={limpiarFormulario}
+              disabled={enviando}
+            >
+              Limpiar formulario
+            </button>
+          </div>
+        </div>
+      </form>
+    </>
   );
 }
