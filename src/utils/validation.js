@@ -13,9 +13,13 @@ export function validarCredito(valores) {
     errores.cedula = "La cédula/ID debe tener entre 5 y 30 caracteres (solo letras, números y guiones)";
   }
 
+  // El máximo debe coincidir con el [Range] de CreditoCreateDto.cs en el backend.
+  const VALOR_CREDITO_MAXIMO = 1000000000;
   const valorCredito = Number(valores.valorCredito);
   if (!valores.valorCredito || Number.isNaN(valorCredito) || valorCredito <= 0) {
     errores.valorCredito = "El valor del crédito debe ser un número mayor a 0";
+  } else if (valorCredito > VALOR_CREDITO_MAXIMO) {
+    errores.valorCredito = "El valor del crédito no puede superar 1.000.000.000";
   }
 
   const tasaInteres = Number(valores.tasaInteres);
