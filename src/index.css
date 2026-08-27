@@ -1,0 +1,30 @@
+:root {
+  --text: #2b2b33;
+  --text-muted: #6b6375;
+  --bg: #f5f6fa;
+  --surface: #ffffff;
+  --border: #dcdde3;
+  --primary: #2f6fed;
+  --primary-hover: #2559c4;
+  --success: #1f8a4c;
+  --success-bg: #e8f7ee;
+  --error: #c0392b;
+  --error-bg: #fdecea;
+
+  font: 16px/1.5 system-ui, "Segoe UI", Roboto, sans-serif;
+  color: var(--text);
+  background: var(--bg);
+  color-scheme: light;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+#root {
+  min-height: 100vh;
+}
